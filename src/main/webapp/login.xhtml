@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<body>
+		<h:outputText value="login:" />  
+		<p:commandLink value="Login" outcome="" onclick="PF('dlg1').show();" />
+
+		<h:form id="Login">
+
+			<p:dialog id="modalDialogLogin" header="Login" widgetVar="dlg1"
+				modal="true" height="150" width="365">
+				<p:panelGrid columns="2">
+
+					<h:outputText value="login:" />
+					<p:inputText id="authorizationLogin" name="j_username"
+						value="#{authorizationBean.login}" required="true">
+						<f:validateLength minimum="1" />
+					</p:inputText>
+					<h:outputText value="password:" />
+					<p:password id="authorizationPassword" name="j_password"
+						value="#{authorizationBean.passwordHex}" required="true">
+						<f:validateLength minimum="1" />
+					</p:password>
+					<p:commandButton value="security" action="/j_spring_security_check" ajax="false" />
+					<p:commandButton value="login" type="submit" action="index.xhtml" ajax="false" />
+					<p:commandButton value="back" action="flight.xhtml" ajax="false" />
+				</p:panelGrid>
+
+			</p:dialog>
+		</h:form>
+</body>
+</html>

@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>PrimeFaces - ShowCase</title>
+</h:head>
+<h:body>
+<ui:composition template="WEB-INF/templates/BasicTemplate.xhtml">
+	<ui:define name="content">
+	       
+	       
+
+	<h:form id="form" >
+
+		<p:growl id="messages" showDetail="true" />
+
+			<p:dataTable var="item" value="#{flightBean.list}" id="flight"
+			editable="true" paginator="true" rows="10"
+			paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"> 
+
+			<f:facet name="header">  
+            Flights  
+        	</f:facet>
+
+			<p:ajax event="rowEdit" listener="#{flightBean.onEdit}"
+				update=":form:messages" />
+			<p:ajax event="rowEditCancel" listener="#{flightBean.onCancel}"
+				update=":form:messages" />
+
+			<p:column headerText="Id" style="width:15%" rendered="false">
+				<p:cellEditor>
+					<f:facet name="output">
+						<h:outputText value="#{item.id}" />
+					</f:facet>
+					<f:facet name="input">
+						<p:inputText value="#{item.id}" />
+					</f:facet>
+				</p:cellEditor>
+			</p:column>
+
+			<p:column headerText="Number" style="width:15%">
+				<p:cellEditor>
+					<f:facet name="output">
+						<h:outputText value="#{item.numberFlight}" />
+					</f:facet>
+					<f:facet name="input">
+						<p:inputText value="#{item.numberFlight}" />
+					</f:facet>
+				</p:cellEditor>
+			</p:column>
+
+			<p:column headerText="From" style="width:10%">
+				<p:cellEditor>
+					<f:facet name="output">
+						<h:outputText value="#{item.fromFlight}" />
+					</f:facet>
+					<f:facet name="input">
+						<p:selectOneMenu value="#{item.fromFlight}" size="1" style="width:100%">
+							<f:selectItem itemValue="Kiev" itemLabel="Kiev" />
+							<f:selectItem itemValue="Moscow" itemLabel="Moscow" />
+							<f:selectItem itemValue="Minsk" itemLabel="Minsk" />
+						</p:selectOneMenu>
+					</f:facet>
+				</p:cellEditor>
+			</p:column>
+
+			<p:column headerText="To" style="width:10%">
+				<p:cellEditor>
+					<f:facet name="output">
+						<h:outputText value="#{item.toFlight}" />
+					</f:facet>
+					<f:facet name="input">
+						<p:selectOneMenu value="#{item.toFlight}" size="1" style="width:100%">
+							<f:selectItem itemValue="Kiev" itemLabel="Kiev" />
+							<f:selectItem itemValue="Moscow" itemLabel="Moscow" />
+							<f:selectItem itemValue="Minsk" itemLabel="Minsk" />
+						</p:selectOneMenu>
+					</f:facet>
+				</p:cellEditor>
+			</p:column>
+
+			<p:column headerText="From Date" style="width:10%">
+				<p:cellEditor>
+					<f:facet name="output">
+						<h:outputText value="#{item.fromDate}">
+							<f:convertDateTime pattern="dd.MM.yy HH:mm" />
+						</h:outputText>
+					</f:facet>
+					<f:facet name="input">
+						<p:calendar value="#{item.fromDate}" showButtonPanel="true" pattern="dd.MM.yy HH:mm">
+							<f:convertDateTime pattern="dd.MM.yy HH:mm" />
+						</p:calendar>
+					</f:facet>
+				</p:cellEditor>
+			</p:column>
+
+			<p:column headerText="To Date" style="width:10%">
+				<p:cellEditor>
+					<f:facet name="output">
+						<h:outputText value="#{item.toDate}">
+							<f:convertDateTime pattern="dd.MM.yy HH:mm" />
+						</h:outputText>
+					</f:facet>
+					<f:facet name="input">
+						<p:calendar value="#{item.toDate}" showButtonPanel="true" pattern="dd.MM.yy HH:mm">
+							<f:convertDateTime pattern="dd.MM.yy HH:mm" />
+						</p:calendar>
+					</f:facet>
+				</p:cellEditor>
+			</p:column>
+
+			<p:column headerText="Count" style="width:10%">
+				<p:cellEditor>
+					<f:facet name="output">
+						<h:outputText value="#{item.count}" />
+					</f:facet>
+					<f:facet name="input">
+						<p:spinner id="count" value="#{item.count}" min="0" max="1000" />
+					</f:facet>
+				</p:cellEditor>
+			</p:column>
+
+			<p:column headerText="Price" style="width:10%">
+				<p:cellEditor>
+					<f:facet name="output">
+						<h:outputText value="#{item.price}" />
+					</f:facet>
+					<f:facet name="input">
+						<p:spinner id="price" value="#{item.price}" prefix="$" min="0" />
+					</f:facet>
+				</p:cellEditor>
+			</p:column>
+
+			<p:column style="width:5%">
+				<p:rowEditor />
+			</p:column>
+			
+			<p:column style="width:5%">
+
+				<p:commandLink ajax="false"
+					actionListener="#{flightBean.removeEntity(item.id)}"
+					update="messages">
+					<p:growl id="messages" showDetail="true" />
+					<span title="Remove" class="ui-icon ui-icon-trash"> <p:confirm
+							header="Confirmation" message="Are you sure?"
+							icon="ui-icon-alert" />
+					</span>
+					<p:confirmDialog global="true" showEffect="fade"
+						hideEffect="explode">
+						<p:commandButton value="Yes" type="button"
+							styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+						<p:commandButton value="No" type="button"
+							styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+					</p:confirmDialog>
+				</p:commandLink>
+			</p:column>
+
+		</p:dataTable>
+		<p:commandButton id="modalDialogButton" value="New Flight"
+			onclick="PF('dlg2').show();" type="button" />
+	</h:form>
+
+	<h:form id="addFlight">
+		<p:dialog id="modalDialog" header="Add new flight" widgetVar="dlg2"
+			modal="true" height="370" width="450">
+			<p:panelGrid columns="2">
+				<h:outputText value="numberFlight:" />
+				<p:inputText id="newNumberFlight" required="true" value="#{flightBean.numberFlight}">
+					<f:validateLength minimum="1" />
+				</p:inputText>
+				<h:outputText value="fromFlight:" />
+				<p:autoComplete completeMethod="#{flightBean.complete}" dropdown="true" value="#{flightBean.fromFlight}" />
+				
+				<h:outputText value="toFlight:" />
+				<p:autoComplete completeMethod="#{flightBean.complete}"  dropdown="true" value="#{flightBean.toFlight}" />
+				
+				<h:outputText value="fromDate:" />
+				<p:calendar value="#{flightBean.fromDate}" showButtonPanel="true" pattern="dd.MM.yy HH:mm">
+					<f:convertDateTime pattern="dd.MM.yy HH:mm" />
+				</p:calendar>
+
+				<h:outputText value="toDate:" />
+				<p:calendar value="#{flightBean.toDate}" showButtonPanel="true" pattern="dd.MM.yy HH:mm">
+					<f:convertDateTime pattern="dd.MM.yy HH:mm" />
+				</p:calendar>
+
+				<h:outputText value="count:" />
+				<p:spinner id="count" value="#{flightBean.count}" min="0" max="1000" />
+
+				<h:outputText value="price:" />
+				<p:spinner id="price" value="#{flightBean.price}" prefix="$" min="0" />
+
+				<p:commandButton value="add" actionListener="#{flightBean.onAdd}" ajax="false" />
+				<p:commandButton value="back" immediate="true" actionListener="#{flightBean.onCancelAdd}" ajax="false"/>
+			</p:panelGrid>
+		</p:dialog>
+	</h:form>
+</ui:define>
+</ui:composition>
+</h:body>
+</html>

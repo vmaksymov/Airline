@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+xmlns:beans="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns:security="http://www.springframework.org/schema/security"
+xmlns:mvc="http://www.springframework.org/schema/mvc"
+xmlns:context="http://www.springframework.org/schema/context" 
+xsi:schemaLocation="
+    http://www.springframework.org/schema/beans 
+    http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+    http://www.springframework.org/schema/security 
+    http://www.springframework.org/schema/security/spring-security-3.2.xsd
+    http://www.springframework.org/schema/context 
+    http://www.springframework.org/schema/context/spring-context-3.2.xsd
+    http://www.springframework.org/schema/mvc 
+    http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd">
+
+    <beans:bean id="myAuthenticationSuccessHandler"
+    	class="com.bionicuniversity.security.MySimpleUrlAuthenticationSuccessHandler" />
+
+    <http auto-config="true" use-expressions="true" >
+                  
+        <intercept-url pattern="/customer*" access="permitAll" />
+   
+        <intercept-url pattern="/**" access="isAuthenticated()" />
+ 
+	        <form-login login-page="/customer.xhtml"
+	        authentication-failure-url="/customer.xhtml?error=true"
+	        authentication-success-handler-ref="myAuthenticationSuccessHandler"/>
+ 
+    </http>
+ 
+
+
+<authentication-manager> 
+   <authentication-provider> 
+      <user-service> 
+         <user name="admin" password="admin" authorities="ROLE_ADMIN"/> 
+         <user name="acount" password="acount" authorities="ROLE_SECURITY"/> 
+         <user name="accountant" password="accountant" authorities="ROLE_ACCOUNTANT"/>
+         <user name="123" password="444" authorities="ROLE_BUSINESSANALYST"/>    
+      </user-service> 
+   </authentication-provider> 
+</authentication-manager> 
+</beans:beans> 

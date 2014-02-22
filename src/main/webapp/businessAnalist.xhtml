@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Insert title here</title>
+</h:head>
+<h:body>
+<ui:composition template="WEB-INF/templates/BasicTemplate.xhtml">
+	<ui:define name="content">
+<h:form>
+<p:tabView id="tabView">  
+
+    <p:tab id="tab" title="Daily report">  
+        <p:dataTable var="item" value="#{businessAnalistBean.listDaily}" id="listDaily" 
+			editable="true" paginator="true" rows="10"  
+                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  >  
+
+			<f:facet name="header">  
+            Daily Report  
+        	</f:facet>
+
+			<p:column headerText="Date" style="width:15%">
+					<f:facet name="output">
+						<h:outputText value="#{item.dateDaily}" />
+					</f:facet>
+			</p:column>
+
+			<p:column headerText="Count" style="width:10%">
+					<f:facet name="output">
+						<h:outputText value="#{item.countDaily}" />
+					</f:facet>
+			</p:column>
+
+			<p:column headerText="Total" style="width:10%">
+					<f:facet name="output">
+						<h:outputText value="#{item.sumBookDaily}" />
+					</f:facet>
+			</p:column>
+
+		</p:dataTable> 
+		<p:commandButton id="refreshDailyReport" value="Refresh"
+			actionListener="#businessAnalistBean.getListDaily()" type="button" />
+    </p:tab>  
+
+    <p:tab id="tab2" title="Destination report">  
+        <p:dataTable var="item" value="#{businessAnalistBean.listDestination}" id="listDestination" 
+			editable="true" paginator="true" rows="10"  
+                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  >  
+
+			<f:facet name="header">  
+            Destination Report  
+        	</f:facet>
+
+			<p:column headerText="To flight" style="width:15%">
+					<f:facet name="output">
+						<h:outputText value="#{item.dateDestination}" />
+					</f:facet>
+			</p:column>
+
+			<p:column headerText="Count" style="width:10%">
+					<f:facet name="output">
+						<h:outputText value="#{item.countDestination}" />
+					</f:facet>
+			</p:column>
+
+			<p:column headerText="Total" style="width:10%">
+					<f:facet name="output">
+						<h:outputText value="#{item.sumBookDestination}" />
+					</f:facet>
+			</p:column>
+
+		</p:dataTable> 
+		<p:commandButton id="refreshDestinationReport" value="Refresh"
+			actionListener="#businessAnalistBean.getListDestination()" type="button" />
+			
+			<h:outputLabel value="From Date:" /> 
+						<p:calendar value="#{businessAnalistBean.beginDate}" pattern="dd.MM.yy HH:mm">
+							<f:convertDateTime pattern="dd.MM.yy HH:mm" />
+						</p:calendar>
+						<h:outputLabel value="To Date:" />
+						<p:calendar value="#{businessAnalistBean.endDate}" pattern="dd.MM.yy HH:mm">
+							<f:convertDateTime pattern="dd.MM.yy HH:mm" />
+						</p:calendar>
+    </p:tab>  
+</p:tabView>
+</h:form>
+</ui:define>
+</ui:composition>
+</h:body>
+</html>

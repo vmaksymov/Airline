@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>Ticket</title>
+</h:head>
+<h:body>
+<ui:composition template="WEB-INF/templates/BasicTemplate.xhtml">
+	<ui:define name="content">	
+	<h:form id="custom" ajax="true">
+	
+	<p:growl id="growl" showDetail="true"/>  
+  
+    <p:dataTable var="item" value="#{bookTicketBean.list}" id="flight" rowKey="#{item.id}"
+			editable="false" paginator="true" rows="10"   selectionMode="single"
+                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  >  
+
+        <p:ajax event="rowSelect" listener="#{bookTicketBean.onRowSelect}"  />  
+        <p:ajax event="rowUnselect" listener="#{bookTicketBean.onRowUnselect}" />   
+  
+        <f:facet name="header">  
+            Flights  
+        </f:facet>
+  
+        <p:column headerText="Id" style="width:15%" rendered="false">
+				<h:outputText value="#{item.id}" />
+			</p:column>
+
+			<p:column headerText="Number" style="width:15%">
+				<h:outputText value="#{item.numberFlight}" />
+			</p:column>
+
+			<p:column headerText="From" style="width:10%">
+						<h:outputText value="#{item.fromFlight}" />
+			</p:column>
+
+			<p:column headerText="To" style="width:10%">
+						<h:outputText value="#{item.toFlight}" />
+			</p:column>
+
+			<p:column headerText="From Date" style="width:10%">
+						<h:outputText value="#{item.fromDate}">
+							<f:convertDateTime pattern="dd.MM.yy HH:mm" />
+						</h:outputText>
+			</p:column>
+
+			<p:column headerText="To Date" style="width:10%">
+						<h:outputText value="#{item.toDate}">
+							<f:convertDateTime pattern="dd.MM.yy HH:mm" />
+						</h:outputText>
+			</p:column>
+
+			<p:column headerText="Count" style="width:10%">
+						<h:outputText value="#{item.count}" />
+			</p:column>
+
+			<p:column headerText="Price" style="width:10%">
+						<h:outputText value="#{item.price}" />
+			</p:column>
+    </p:dataTable>  
+    </h:form>
+	<h:form id="custom2" ajax="true">
+	<p:dataTable id="ticket" var="ticket" value="#{bookTicketBean.ticket}"  >  
+  
+        <f:facet name="ticket">  
+            Ticket  
+        </f:facet>  
+  
+        <p:column headerText="Flight" style="width:15%">
+				<h:outputText value="#{ticket.numberFlight}" />
+			</p:column>
+
+			<p:column headerText="From" style="width:10%">
+						<h:outputText value="#{ticket.fromFlight}" />
+			</p:column>
+
+			<p:column headerText="To" style="width:10%">
+						<h:outputText value="#{ticket.toFlight}" />
+			</p:column>
+			
+			<p:column headerText="From Date" style="width:10%">
+						<h:outputText value="#{ticket.fromDate}">
+							<f:convertDateTime pattern="dd.MM.yy HH:mm" />
+						</h:outputText>
+			</p:column>
+
+			<p:column headerText="To Date" style="width:10%">
+						<h:outputText value="#{ticket.toDate}">
+							<f:convertDateTime pattern="dd.MM.yy HH:mm" />
+						</h:outputText>
+			</p:column>
+
+			<p:column headerText="Count" style="width:10%">
+						<h:outputText value="#{ticket.count}" />
+			</p:column>
+
+			<p:column headerText="Price" style="width:10%">
+						<h:outputText value="#{ticket.price}" />
+			</p:column>
+			
+			<p:column style="width:5%">
+
+				<p:commandLink ajax="false"
+					actionListener="#{bookTicketBean.removeTicket(ticket)}"
+					update="messages">
+					<p:growl id="messages" showDetail="true" />
+					<span title="Remove" class="ui-icon ui-icon-trash"> <p:confirm
+							header="Confirmation" message="Are you sure?"
+							icon="ui-icon-alert" />
+					</span>
+					<p:confirmDialog global="true" showEffect="fade"
+						hideEffect="explode" >
+						<p:commandButton value="Yes" type="button"
+							styleClass="ui-confirmdialog-yes" icon="ui-icon-check" immediate="true"/>
+						<p:commandButton value="No" type="button"
+							styleClass="ui-confirmdialog-no" icon="ui-icon-close" immediate="true"/>
+					</p:confirmDialog>
+				</p:commandLink>
+			</p:column>
+  
+    </p:dataTable>  
+    </h:form>
+	<h:form id="custom3" ajax="true">
+	<p:commandButton id="modalDialogButton2" value="Create Book"
+			onclick="PF('dlg6').show();" type="button" />
+
+		<p:dialog id="modalDialog" header="Book ticket" widgetVar="dlg6"
+			modal="true" height="120" width="300">
+				
+				<h:outputLabel value="Login:" />
+				<p:inputText id="login" required="true" value="#{bookTicketBean.createRowName}">
+					<f:validateLength minimum="1" />
+				</p:inputText>
+				
+				<h:outputText value="e-mail:" />
+				<p:inputText id="email" required="true" value="#{bookTicketBean.email}">
+					<f:validateLength minimum="1" />
+				</p:inputText>	
+				
+				<p:commandButton value="add" actionListener="#{bookTicketBean.onAddBook}" ajax="false" />
+				<p:commandButton value="back" immediate="true" actionListener="#{flightBean.onCancelAdd}" ajax="false"/>
+			
+		</p:dialog>
+	</h:form>
+
+
+</ui:define>
+</ui:composition>
+</h:body>
+</html>

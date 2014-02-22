@@ -1,0 +1,151 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>Insert title here</title>
+</h:head>
+<h:body>
+<ui:composition template="WEB-INF/templates/BasicTemplate.xhtml">
+	<ui:define name="content">
+
+	<h:form id="form">
+
+		<p:growl id="messages" showDetail="true" />
+
+		<p:dataTable var="item" value="#{accountBean.list}" id="account"
+			editable="true" paginator="true" rows="10"
+			paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+
+			<f:facet name="header">  
+            Account 
+        	</f:facet>
+
+			<p:ajax event="rowEdit"
+				listener="#{accountBean.onEdit(item.id,accountBean.login,accountBean.passwordHex,accountBean.role)}"
+				update=":form:messages" />
+			<p:ajax event="rowEditCancel" listener="#{accountBean.onCancel}"
+				update=":form:messages" />
+
+			<p:column headerText="Id:" style="width:15%" rendered="false">
+				<p:cellEditor>
+					<f:facet name="output">
+						<h:outputText value="#{item.id}" />
+					</f:facet>
+					<f:facet name="input">
+						<p:inputText value="#{item.id}" />
+					</f:facet>
+				</p:cellEditor>
+			</p:column>
+
+			<p:column headerText="login:" style="width:15%">
+				<p:cellEditor>
+					<f:facet name="output">
+						<h:outputText value="#{item.login}" />
+					</f:facet>
+					<f:facet name="input">
+						<p:inputText
+							value="#{item.login}" />
+					</f:facet>
+				</p:cellEditor>
+			</p:column>
+
+			<p:column headerText="password:" style="width:10%">
+				<p:cellEditor>
+					<f:facet name="output">
+						<h:outputText value="#{item.passwordHex}" />
+					</f:facet>
+					<f:facet name="input">
+						<p:inputText id="password" value="#{item.passwordHex}" />
+					</f:facet>
+				</p:cellEditor>
+			</p:column>
+
+			<p:column headerText="role:" style="width:10%">
+				<p:cellEditor>
+					<f:facet name="output">
+						<h:outputText value="#{accountBean.getRoleString(item.role)}" />
+					</f:facet>
+					<f:facet name="input">
+						<p:selectOneMenu
+							value="#{item.role}"
+							size="1" style="width:100%">
+							<f:selectItem itemValue="1" itemLabel="Security" />
+							<f:selectItem itemValue="2" itemLabel="Admin" />
+							<f:selectItem itemValue="3" itemLabel="Accountant" />
+							<f:selectItem itemValue="4" itemLabel="Bussines Analist" />
+						</p:selectOneMenu>
+					</f:facet>
+				</p:cellEditor>
+			</p:column>
+
+			<p:column style="width:5%">
+				<p:rowEditor />
+			</p:column>
+
+			<p:column style="width:5%">
+
+				<p:commandLink ajax="false"
+					actionListener="#{accountBean.selectDelete(item.id)}"
+					update="messages">
+					<p:growl id="messages" showDetail="true" />
+					<span title="Remove" class="ui-icon ui-icon-trash"> <p:confirm
+							header="Confirmation" message="Are you sure?"
+							icon="ui-icon-alert" />
+					</span>
+					<p:confirmDialog global="true" showEffect="fade"
+						hideEffect="explode">
+						<p:commandButton value="Yes" type="button"
+							styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+						<p:commandButton value="No" type="button"
+							styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+					</p:confirmDialog>
+				</p:commandLink>
+			</p:column>
+
+
+
+
+
+		</p:dataTable>
+		<p:commandButton id="modalDialogButton" value="New Account"
+			onclick="PF('dlg4').show();" type="button" />
+	</h:form>
+
+	<h:form id="addAccount">
+		<p:dialog id="modalDialog" header="Add new account" widgetVar="dlg4"
+			modal="true" height="200" width="380">
+			<p:panelGrid columns="2">
+				<h:outputText value="login:" />
+				<p:inputText id="login" required="true" value="#{accountBean.login}">
+					<f:validateLength minimum="1" />
+				</p:inputText>
+				<h:outputText value="password:" />
+				<p:inputText id="password" required="true"
+					value="#{accountBean.passwordHex}">
+					<f:validateLength minimum="1" />
+				</p:inputText>
+				<h:outputText value="role:" />
+				<p:selectOneMenu value="#{accountBean.role}" size="1"
+					style="width:100%">
+					<f:selectItem itemValue="1" itemLabel="Security" />
+					<f:selectItem itemValue="2" itemLabel="Admin" />
+					<f:selectItem itemValue="3" itemLabel="Accountant" />
+					<f:selectItem itemValue="4" itemLabel="Bussines Analist" />
+				</p:selectOneMenu>
+
+				<p:commandButton value="add" actionListener="#{accountBean.onAdd}"
+					ajax="false" />
+				<p:commandButton value="back"
+					actionListener="#{accountBean.onCancelAdd}" ajax="false" />
+			</p:panelGrid>
+		</p:dialog>
+	</h:form>
+</ui:define>
+</ui:composition>
+</h:body>
+</html>

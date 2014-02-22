@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>Insert title here</title>
+</h:head>
+<h:body>
+<ui:composition template="WEB-INF/templates/BasicTemplate.xhtml">
+	<ui:define name="content">
+
+	<h:form id="form">
+
+		<p:growl id="messages" showDetail="true" />
+
+		<p:dataTable var="item" value="#{bookBean.list}" id="book"
+			editable="false" paginator="true" rows="10"
+			paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+
+			<f:facet name="header">  
+            Book 
+        	</f:facet>
+
+			<p:column headerText="Number:" style="width:15%">
+						<h:outputText value="#{item.id}" />
+			</p:column>
+
+			<p:column headerText="Owner:" style="width:15%">
+						<h:outputText value="#{item.createRowName}" />
+			</p:column>
+
+			<p:column headerText="E-mail" style="width:10%">
+						<h:outputText value="#{item.email}" />
+			</p:column>
+
+			<p:column headerText="Date" style="width:10%">
+						<h:outputText value="#{item.timeCreate}" />
+			</p:column>
+			
+			<p:column headerText="Total" style="width:10%">
+						<h:outputText value="#{item.sumBook}" />
+			</p:column>
+			
+			<p:column headerText="State" style="width:10%" rendered="false">
+						<h:outputText value="#{item.state}" />
+			</p:column>
+			
+			<p:column headerText="Date paid" style="width:10%" rendered="false">
+						<h:outputText value="#{item.datePaid}" />
+			</p:column>
+			
+			<p:column headerText="Note" style="width:10%" rendered="false">
+						<h:outputText value="#{item.notePayment}" />
+			</p:column>
+
+			<p:column style="width:5%">
+
+				<p:commandLink ajax="false"
+					onclick="PF('dlg5').show();"
+					update="messages">
+					
+					<span title="Remove" class="ui-icon ui-icon-trash"> 
+					</span>
+				</p:commandLink>
+			</p:column>
+
+
+
+
+
+		</p:dataTable>
+	</h:form>
+
+	<h:form id="changeState">
+		<p:dialog id="modalDialog" header="Change State" widgetVar="dlg5"
+			modal="true" height="200" width="380">
+			<p:panelGrid columns="2">
+				<h:outputText value="Date paid" />
+				<p:calendar value="#{bookBean.datePaid}" pattern="dd.MM.yy HH:mm">
+					<f:convertDateTime pattern="dd.MM.yy HH:mm" />
+				</p:calendar>
+				
+				<h:outputText value="Note" />
+				<p:inputTextarea rows="10" cols="50" completeMethod="#{bookBean.notePayment}" queryDelay="750" minQueryLength="4" /> 
+
+				<p:commandButton value="apply" actionListener="#{bookBean.onApply}"
+					ajax="false" />
+				<p:commandButton value="back"
+					actionListener="#{bookBean.onCancel}" ajax="false" />
+			</p:panelGrid>
+		</p:dialog>
+	</h:form>
+</ui:define>
+</ui:composition>
+</h:body>
+</html>

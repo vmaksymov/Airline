@@ -1,0 +1,13 @@
+----------------------------------------------------------------
+Thu Jan 23 21:29:19 EET 2014:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.10.1.1 - (1458268): instance a816c00e-0143-c093-f626-0000034d2128 
+on database directory C:\Users\oper4\workspace3\3.7 Spring JSF JPA integration\example_3_8 with class loader ContextLoader@null 
+Loaded from file:/C:/Users/oper4/.m2/repository/org/apache/derby/derby/10.10.1.1/derby-10.10.1.1.jar
+java.vendor=Oracle Corporation
+java.runtime.version=1.7.0_25-b17
+user.dir=C:\Users\oper4\workspace3\3.7 Spring JSF JPA integration
+os.name=Windows 7
+os.arch=amd64
+os.version=6.1
+derby.system.home=null
+Database Class Loader started - derby.database.classpath=''
